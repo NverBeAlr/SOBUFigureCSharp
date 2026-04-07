@@ -1,0 +1,65 @@
+@using SOBUFigure.Models
+@rendermode InteractiveServer
+@using SOBUFigure.Services.Admins
+@page "/Admins/{Id:int}/Edit"
+@inject IAdminService AdminService
+
+<h3>Edit</h3>
+
+<EditForm Model="admin" FormName="updateAdmin" OnInvalidSubmit="SaveAdmin">
+    <DataAnnotationsValidator>
+        <div class="form-group">
+            <lable>Name: </lable>
+            <InputText @bind-Value="admin.Name"/>
+            <ValidationMessage For="() => admin.Name"/>
+        </div>
+        
+        <div class="form-group">
+            <lable>Email: </lable>
+            <InputText @bind-Value="admin.Email"/>
+            <ValidationMessage For="() => admin.Email"/>
+        </div>
+        
+        <div class="form-group">
+            <lable>Password: </lable>
+            <InputText @bind-Value="admin.Password"/>
+            <ValidationMessage For="() => admin.Password"/>
+        </div>
+        
+        <div class="form-group">
+            <lable>Phone number: </lable>
+            <InputNumber @bind-Value="admin.Phone_number"/>
+            <ValidationMessage For="() => admin.Phone_number"/>
+        </div>
+        
+        <div class="form-group">
+            <lable>Role: </lable>
+            <InputNumber @bind-Value="admin.Role"/>
+            <ValidationMessage For="() => admin.Role"/>
+        </div>
+        
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">
+                Save
+            </button>
+        </div>
+    </DataAnnotationsValidator>
+</EditForm>
+
+@code {
+    public Admin admin = new Admin();
+    [Parameter] public int Id { get; set; }
+    [Inject] private NavigationManager _navigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        admin = await AdminService.GetAdminByIdAsync(Id);
+    }
+
+    protected async Task SaveAdmin()
+    {
+        admin.Id = Id;
+        await AdminService.UpdateAdminAsync(admin);
+        _navigationManager.NavigateTo("Admins", true);
+    }
+}

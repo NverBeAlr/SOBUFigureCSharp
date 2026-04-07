@@ -1,0 +1,42 @@
+@page "/Brands/{Id:int}/Edit"
+@rendermode InteractiveServer
+@using SOBUFigure.Models
+@using SOBUFigure.Services.Brands
+@inject IBrandService BrandService
+<h3>Edit</h3>
+<EditForm Model="brand" FormName="updateBrand" OnValidSubmit="SaveBrand">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Name: </label>
+        <InputText @bind-Value="brand.Name"/>
+        <ValidationMessage For="() => brand.Name"/>
+    </div>
+    
+    <div class="form-group">
+        <label>Country: </label>
+        <InputText @bind-Value="brand.Country"/>
+        <ValidationMessage For="() => brand.Country"/>
+    </div>
+    
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">
+            Save
+        </button>
+    </div>
+</EditForm>
+@code {
+    public Brand brand = new Brand();
+    [Parameter] public int Id { get; set; }
+    [Inject] private NavigationManager _navigationManager { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        brand = await BrandService.GetCategoryByIdAsync(Id);
+    }
+
+    protected async Task SaveBrand()
+    {
+        brand.Id = Id;
+        await BrandService.UpdateBrandAsync(brand);
+        _navigationManager.NavigateTo("/Brands", true);
+    }
+}

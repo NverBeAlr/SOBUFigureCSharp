@@ -1,0 +1,58 @@
+@using SOBUFigure.Models
+@rendermode InteractiveServer
+@using SOBUFigure.Services.Customers
+@page "/Customers/Create"
+@inject ICustomerService CustomerService
+
+<h3>Create</h3>
+
+<EditForm Model="customer" FormName="createCustomer" OnInvalidSubmit="SaveCustomer">
+    <DataAnnotationsValidator>
+        <div class="form-group">
+            <lable>Name: </lable>
+            <InputText @bind-Value="customer.Name"/>
+            <ValidationMessage For="() => customer.Name"/>
+        </div>
+        
+        <div class="form-group">
+            <lable>Email: </lable>
+            <InputText @bind-Value="customer.Email"/>
+            <ValidationMessage For="() => customer.Email"/>
+        </div>
+        
+        <div class="form-group">
+            <lable>Password: </lable>
+            <InputText @bind-Value="customer.Password"/>
+            <ValidationMessage For="() => customer.Password"/>
+        </div>
+        
+        <div class="form-group">
+            <lable>Phone number: </lable>
+            <InputNumber @bind-Value="customer.Phone_number"/>
+            <ValidationMessage For="() => customer.Phone_number"/>
+        </div>
+        
+        <div class="form-group">
+            <lable>Address: </lable>
+            <InputNumber @bind-Value="customer.Address"/>
+            <ValidationMessage For="() => customer.Address"/>
+        </div>
+        
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">
+                Save
+            </button>
+        </div>
+    </DataAnnotationsValidator>
+</EditForm>
+
+@code {
+    public Customer customer = new Customer();
+    [Inject] NavigationManager _navigationManager { get; set; }
+
+    private async Task SaveCustomer()
+    {
+        await CustomerService.CreateCustomerAsync(customer);
+        _navigationManager.NavigateTo("/Customers", true);
+    }
+}

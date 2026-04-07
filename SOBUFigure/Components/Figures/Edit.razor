@@ -1,0 +1,90 @@
+@page "/Figures/{Id:int}/Create"
+@using SOBUFigure.Models
+@using SOBUFigure.Services.Brands
+@using SOBUFigure.Services.Categories
+@using SOBUFigure.Services.Figures
+@inject IFigureService FigureService
+@inject ICategoryService CategoryService
+@inject IBrandService BrandService
+@rendermode InteractiveServer
+
+<h3>Update</h3>
+
+<EditForm Model="figure" FormName="updateFigure" OnValidSubmit="SaveFigure">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Name</label>
+        <InputText @bind-Value="figure.Name"/>
+    </div>
+    
+    <div class="form-group">
+        <label>Category</label>
+        <InputSelect @bind-Value="figure.CategoryId">
+            @foreach (var category in categories)
+            {
+                <option value="@category.Id">
+                    @category.Name
+                </option>
+            }
+        </InputSelect>
+    </div>
+    
+    <div class="form-group">
+        <label>Brand</label>
+        <InputSelect @bind-Value="figure.BrandId">
+            @foreach (var brand in brands)
+            {
+                <option value="@brand.Id">
+                    @brand.Name
+                </option>
+            }
+        </InputSelect>
+    </div>
+    
+    <div class="form-group">
+        <label>Quantity</label>
+        <InputNumber @bind-Value="figure.Quantity"/>
+    </div>
+    
+    <div class="form-group">
+        <label>Price</label>
+        <InputNumber @bind-Value="figure.Price"/>
+    </div>
+    
+    <div class="form-group">
+        <label>Scale</label>
+        <InputNumber @bind-Value="figure.Scale"/>
+    </div>
+    
+    <div class="form-group">
+        <label>Description</label>
+        <InputNumber @bind-Value="figure.Description"/>
+    </div>
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</EditForm>
+
+@code {
+    Figure figure = new Figure();
+    List<Category> categories = new List<Category>();
+    List<Brand> brands = new List<Brand>();
+    [Parameter] public int Id { get; set; }
+    [Inject] public NavigationManager Navigation { get; set; }
+    
+    //function tu dong load khi goi component
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await CategoryService.GetAllCategoriesAsync();
+        brands = await BrandService.GetAllBrandsAsync();
+        figure = await FigureService.GetFigureByIdAsync(Id);
+    }
+    
+    //Function luu du lieu
+    public async Task SaveFigure()
+    {
+        await FigureService.UpdateFigureAsync(figure);
+        Navigation.NavigateTo("/Figures", true);
+    }
+}

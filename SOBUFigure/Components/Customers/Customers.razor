@@ -1,0 +1,53 @@
+@using SOBUFigure.Models
+@rendermode InteractiveServer
+@using SOBUFigure.Services.Customers
+@page "/Customers"
+@inject ICustomerService CustomerService
+
+<h3>Admins</h3>
+<a href="/Admins/Create" class="btn btn-primary">Add new user</a>
+<table class="table table-bordered">
+    <thread>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Phone_number</th>
+            <th>Address</th>
+            <th></th>
+        </tr>
+    </thread>
+    <tbody>
+    @foreach (var customer in _customers)
+    {
+        <tr>
+            <td>@customer.Id</td>
+            <td>@customer.Name</td>
+            <td>@customer.Email</td>
+            <td>@customer.Password</td>
+            <td>@customer.Phone_number</td>
+            <td>@customer.Address</td>
+            <td>
+                <a href="/Admins/@customer.Id/Edit" class="btn btn-secondary" >Edit</a>
+                <button class="btn btn-danger" type="submit" @onclick="() => DeleteCustomer(customer.Id) ">Delete</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    List<Customer> _customers = new List<Customer>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _customers = await CustomerService.GetAllCustomersAsync();
+    }
+
+    private async Task DeleteCustomer(int Id)
+    {
+        await CustomerService.DeleteCustomerAsync(Id);
+        _customers = await CustomerService.GetAllCustomersAsync();
+    }
+}

@@ -1,0 +1,55 @@
+@page "/Orders"
+@using SOBUFigure.Models
+@using SOBUFigure.Services.Orders
+@using Customers = SOBUFigure.Components.Customers
+@inject IOrderService OrderService
+@rendermode InteractiveServer
+
+<h3>Orders</h3>
+
+<a href="/Orders/Create" class="btn btn btn-primary">Add order</a>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Customer</th>
+        <th>Order date</th>
+        <th>Status</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in orders)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.customer?.Name</td>
+            <td>@order.OrderDate</td>
+            <td>@order.Status</td>
+            <td>
+                <a href="/Orders/@order.Id/Update" class="btn btn-secondary">Edit</a>
+                <button class="btn btn-danger" @onclick="() => DeleteOrder(order.Id)">Delete</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+
+</table>
+
+@code {
+    //List luu du lieu lay tu DB
+    List<Order> orders = new List<Order>();
+    
+    //function tu dong chay khi load component
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await OrderService.GetAllOrderssAsync();
+    }
+    
+    //Function xoa
+    private async Task DeleteOrder(int Id)
+    {
+        await OrderService.DeleteOrderAsync(Id);
+        orders = await OrderService.GetAllOrderssAsync();
+    }
+}

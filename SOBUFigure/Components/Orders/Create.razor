@@ -1,0 +1,70 @@
+@page "/Orders/Create";
+@using SOBUFigure.Models
+@using SOBUFigure.Services.Customers
+@using SOBUFigure.Services.Orders
+@inject IOrderService OrderService
+@inject ICustomerService CustomerService
+@rendermode InteractiveServer
+
+<h3>Create</h3>
+
+<EditForm Model="order" FormName="createOrder" OnInvalidSubmit="SaveOrder">
+    <DataAnnotationValidator />
+    
+    <div class="form-group">
+        <label>Customer Name</label>
+        <InputSelect @bind-Value="order.CustomerId">
+            @foreach (var customer in customers)
+            {
+                <option value="@customer.Id">
+                    @customer.Name
+                </option>
+            }
+        </InputSelect>
+    </div>
+    
+    <div class="form-group">
+        <label>Order Date</label>
+        <InputDate @bind-Value="order.OrderDate"/>
+    </div>
+    
+    <div class="form-group">
+        <label>Status</label>
+        <InputSelect @bind-Value="order.Status">
+            @foreach (var status in Enum.GetValues<OrderStatus>())
+            {
+                <option value="@status">@status</option>
+            }
+        </InputSelect>
+    </div>
+    
+</EditForm>
+
+@code {
+    Order order = new Order();
+    List<Customer> customers = new List<Customer>();
+    [Inject] public NavigationManager Navigation { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await CustomerService.GetAllCustomersAsync();
+    }
+
+    public async Task SaveOrder()
+    {
+        await OrderService.CreateOrderAsync(order);
+        Navigation.NavigateTo("/Orders",true);
+    }
+    
+    // Ensure Order model has this property
+    public OrderStatus Status { get; set; } = OrderStatus.PENDING;
+
+    // Enum definition
+    public enum OrderStatus
+    {
+        PENDING,
+        PROCESSING,
+        SHIPPED,
+        DELIVERED
+    }
+}

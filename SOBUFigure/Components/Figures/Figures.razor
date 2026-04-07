@@ -1,0 +1,58 @@
+@page "/Figures"
+@using SOBUFigure.Models
+@using SOBUFigure.Services.Figures
+@using Brand = SOBUFigure.Components.Brands
+@using Category = SOBUFigure.Components.Categories
+@inject IFigureService FigureService
+@rendermode InteractiveServer
+<h3>Figures</h3>
+
+<a href="/Products/Create" class="btn btn-primary">Add figure</a>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Category</th>
+        <th>Brand</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var figure in figures)
+    {
+        <tr>
+            <td>@figure.Id</td>
+            <td>@figure.category?.Name</td>
+            <td>@figure.brand?.Name</td>
+            <td>@figure.Name</td>
+            <td>@figure.Quantity</td>
+            <td>@figure.Price</td>
+            <td>
+                <a href="/Products/@figure.Id/Update" class="btn btn-secondary">Edit</a>
+                <button class="btn btn-danger" @onclick="() => DeleteFigure(figure.Id)">Delete</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    //List luu du lieu lay tu DB
+    List<Figure> figures = new List<Figure>();
+    
+    //function tu dong chay khi load component
+    protected override async Task OnInitializedAsync()
+    {
+        figures = await FigureService.GetAllFiguresAsync();
+    }
+    
+    //Function xoa
+    private async Task DeleteFigure(int Id)
+    {
+        await FigureService.DeleteFigureAsync(Id);
+        figures = await FigureService.GetAllFiguresAsync();
+    }
+}
