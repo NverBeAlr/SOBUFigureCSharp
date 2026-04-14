@@ -1,0 +1,61 @@
+@page "/Orders/{id:int}/Update"
+@using SOBUFigure.Models
+@using SOBUFigure.Services.Customers
+@using SOBUFigure.Services.Orders
+@inject IOrderService OrderService
+@inject ICustomerService CustomerService
+@rendermode InteractiveServer
+
+<h3>Edit</h3>
+
+<EditForm Model="order" FormName="updateOrder" OnInvalidSubmit="SaveOrder">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Customer</label>
+        <InputSelect @bind-Value="order.CustomerId">
+            @foreach (var customer in customers)
+            {
+                <option value="@customer.Id">@customer.Name</option>
+            }
+        </InputSelect>
+    </div>
+    
+    <div class="form-group">
+        <label>Order Date</label>
+        <InputDate @bind-Value="order.OrderDate" />
+    </div>
+    
+    <div class="form-group">
+        <label>Status</label>
+        <InputSelect @bind-Value="order.Status">
+            @foreach (var status in Enum.GetValues<Create.OrderStatus>())
+            {
+                <option value="@status">@status</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+    
+</EditForm>
+
+@code {
+    Order order = new Order();
+    [Parameter] public int Id { get; set; }
+    [Inject] public NavigationManager Navigation { get; set; }
+    List<Customer> customers = new List<Customer>();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await CustomerService.GetAllCustomersAsync();
+        order = await OrderService.GetOrderByIdAsync(Id);
+    }
+
+    private async Task SaveOrder()
+    {
+        await OrderService.UpdateOrderAsync(order);
+        Navigation.NavigateTo("/Orders", true);
+    }
+}

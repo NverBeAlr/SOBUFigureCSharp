@@ -8,16 +8,46 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.5" />
       <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Images\" />
-      <Folder Include="Components\OrderDetails\" />
-      <Folder Include="Components\Payments\" />
+      <Folder Include="Components\Pages\Images\" />
+      <Folder Include="Components\Pages\Payments\" />
       <Folder Include="Services\Images\" />
       <Folder Include="Services\Payments\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Components\Pages\Brands\Brands.razor" />
+      <AdditionalFiles Include="Components\Pages\Brands\Create.razor" />
+      <AdditionalFiles Include="Components\Pages\Brands\Edit.razor" />
+      <AdditionalFiles Include="Components\Pages\Categories\Categories.razor" />
+      <AdditionalFiles Include="Components\Pages\Categories\Create.razor" />
+      <AdditionalFiles Include="Components\Pages\Categories\Edit.razor" />
+      <AdditionalFiles Include="Components\Pages\Customers\Create.razor" />
+      <AdditionalFiles Include="Components\Pages\Customers\Customers.razor" />
+      <AdditionalFiles Include="Components\Pages\Customers\Edit.razor" />
+      <AdditionalFiles Include="Components\Pages\Figures\Create.razor" />
+      <AdditionalFiles Include="Components\Pages\Figures\Edit.razor" />
+      <AdditionalFiles Include="Components\Pages\Figures\Figures.razor" />
+      <AdditionalFiles Include="Components\Pages\Orders\Create.razor" />
+      <AdditionalFiles Include="Components\Pages\Orders\Edit.razor" />
+      <AdditionalFiles Include="Components\Pages\Orders\Orders.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Components\Categories\Categories.razor" />
+      <_ContentIncludedByDefault Remove="Components\Categories\Create.razor" />
+      <_ContentIncludedByDefault Remove="Components\Categories\Edit.razor" />
+      <_ContentIncludedByDefault Remove="Components\Customers\Create.razor" />
+      <_ContentIncludedByDefault Remove="Components\Customers\Customers.razor" />
+      <_ContentIncludedByDefault Remove="Components\Customers\Edit.razor" />
+      <_ContentIncludedByDefault Remove="Components\Figures\Create.razor" />
+      <_ContentIncludedByDefault Remove="Components\Figures\Edit.razor" />
+      <_ContentIncludedByDefault Remove="Components\Figures\Figures.razor" />
     </ItemGroup>
 
 </Project>

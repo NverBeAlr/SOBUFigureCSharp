@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Components.Authorization;
 using SOBUFigure.Components;
 using SOBUFigure.Data;
 using SOBUFigure.Services.Categories;
 using Microsoft.EntityFrameworkCore;
+using SOBUFigure.Components.Authentication;
 using SOBUFigure.Services.Admins;
 using SOBUFigure.Services.Brands;
 using SOBUFigure.Services.Customers;
@@ -19,12 +21,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IFigureService, FigureService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
+builder.Services.AddScoped<AuthenticationStateProvider, AdminAuthStateProvider>();
+builder.Services.AddCascadingAuthenticationState();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

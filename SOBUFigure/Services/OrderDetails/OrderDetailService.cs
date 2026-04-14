@@ -6,29 +6,39 @@ namespace SOBUFigure.Services.OrderDetails;
 
 public class OrderDetailService : IOrderDetailService
 {
-    
-    public Task<List<OrderDetail>> GetAllOrderDetailsAsync()
+    private readonly AppDbContext _context;
+
+    public OrderDetailService(AppDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public Task<OrderDetail> GetOrderDetailByIdAsync(int Id)
+    public async Task<List<OrderDetail>> GetAllOrderDetailsAsync()
     {
-        throw new NotImplementedException();
+        return await _context.OrderDetails.Include(o=>o.Order).Include(o=>o.Figure).ToListAsync();
     }
 
-    public Task<OrderDetail> CreateOrderDetailAsync(OrderDetail orderDetail)
+    public async Task<OrderDetail> GetOrderDetailByIdAsync(int Id)
     {
-        throw new NotImplementedException();
+        return await _context.OrderDetails.FindAsync(Id);
     }
 
-    public Task<OrderDetail> UpdateOrderDetailAsync(OrderDetail orderDetail)
+    public async Task CreateOrderDetailAsync(OrderDetail orderDetail)
     {
-        throw new NotImplementedException();
+        _context.OrderDetails.Add(orderDetail);
+        await _context.SaveChangesAsync();
     }
 
-    public Task DeleteOrderDetailAsync(int Id)
+    public async Task UpdateOrderDetailAsync(OrderDetail orderDetail)
     {
-        throw new NotImplementedException();
+        _context.OrderDetails.Update(orderDetail);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteOrderDetailAsync(int Id)
+    {
+        var orderDetail = await GetOrderDetailByIdAsync(Id);
+        _context.OrderDetails.Remove(orderDetail);
+        await _context.SaveChangesAsync();
     }
 }

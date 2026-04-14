@@ -11,7 +11,7 @@ public class Order
     public int CustomerId { get; set; }
     
     public DateTime OrderDate { get; set; }
-
+    
     public int Status { get; set; }
     
     [ForeignKey("CustomerId")]

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SOBUFigure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8dfb32b62b846e764073fee8807dbf873681239d")]
 [assembly: System.Reflection.AssemblyProductAttribute("SOBUFigure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SOBUFigure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
