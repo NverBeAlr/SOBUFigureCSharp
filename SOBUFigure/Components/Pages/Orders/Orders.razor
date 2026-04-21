@@ -23,10 +23,11 @@
     {
         <tr>
             <td>@order.Id</td>
-            <td>@order.customer?.Name</td>
+            <td>@order.Customer?.Name</td>
             <td>@order.OrderDate</td>
             <td>@order.Status</td>
             <td>
+                <a href="/Orders/@order.Id/Details" class="btn btn-info">Details</a>
                 <a href="/Orders/@order.Id/Update" class="btn btn-secondary">Edit</a>
                 <button class="btn btn-danger" @onclick="() => DeleteOrder(order.Id)">Delete</button>
             </td>

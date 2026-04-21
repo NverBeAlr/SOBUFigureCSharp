@@ -48,6 +48,9 @@
       <_ContentIncludedByDefault Remove="Components\Figures\Create.razor" />
       <_ContentIncludedByDefault Remove="Components\Figures\Edit.razor" />
       <_ContentIncludedByDefault Remove="Components\Figures\Figures.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\OrderDetails\Create.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\OrderDetails\Edit.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\OrderDetails\OrderDetails.razor" />
     </ItemGroup>
 
 </Project>

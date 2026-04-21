@@ -16,10 +16,11 @@ public class OrderDetail
     public int Quantity { get; set; }
     
     [Required(ErrorMessage = "Không được để trống")]
-    public double TotalPrice { get; set; }
+    public double UnitPrice { get; set; }
     
     [ForeignKey("OrderId")]
     public Order? Order { get; set; }
+    
     [ForeignKey("FigureId")]
     public Figure? Figure { get; set; }
 }

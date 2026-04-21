@@ -15,12 +15,14 @@ public class OrderService : IOrderService
     
     public async Task<List<Order>> GetAllOrderssAsync()
     {
-        return await _context.Orders.Include(o => o.customer).ToListAsync();
+        return await _context.Orders.Include(o => o.Customer).ToListAsync();
     }
 
     public async Task<Order> GetOrderByIdAsync(int Id)
     {
-        return await _context.Orders.FindAsync(Id);
+        return await _context.Orders
+            .Include(x => x.Customer)
+            .FirstOrDefaultAsync(x => x.Id == Id);
     }
 
     public async Task CreateOrderAsync(Order order)

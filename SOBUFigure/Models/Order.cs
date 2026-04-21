@@ -15,5 +15,7 @@ public class Order
     public int Status { get; set; }
     
     [ForeignKey("CustomerId")]
-    public Customer? customer { get; set; }
+    public Customer? Customer { get; set; }
+    
+    public List<OrderDetail> OrderDetails { get; set; } = new();
 }

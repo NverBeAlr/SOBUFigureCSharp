@@ -13,32 +13,28 @@ public class OrderDetailService : IOrderDetailService
         _context = context;
     }
 
-    public async Task<List<OrderDetail>> GetAllOrderDetailsAsync()
+    public async Task<List<OrderDetail>> GetOrderDetailsByOrderIdAsync(int orderId)
     {
-        return await _context.OrderDetails.Include(o=>o.Order).Include(o=>o.Figure).ToListAsync();
+        return await _context.OrderDetails
+            .Include(x => x.Figure)
+            .Where(x => x.OrderId == orderId)
+            .ToListAsync();
     }
 
-    public async Task<OrderDetail> GetOrderDetailByIdAsync(int Id)
-    {
-        return await _context.OrderDetails.FindAsync(Id);
-    }
-
-    public async Task CreateOrderDetailAsync(OrderDetail orderDetail)
+    public async Task AddOrderDetailAsync(OrderDetail orderDetail)
     {
         _context.OrderDetails.Add(orderDetail);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateOrderDetailAsync(OrderDetail orderDetail)
+    public async Task DeleteOrderDetailAsync(int id)
     {
-        _context.OrderDetails.Update(orderDetail);
-        await _context.SaveChangesAsync();
-    }
+        var detail = await _context.OrderDetails.FindAsync(id);
 
-    public async Task DeleteOrderDetailAsync(int Id)
-    {
-        var orderDetail = await GetOrderDetailByIdAsync(Id);
-        _context.OrderDetails.Remove(orderDetail);
-        await _context.SaveChangesAsync();
+        if (detail != null)
+        {
+            _context.OrderDetails.Remove(detail);
+            await _context.SaveChangesAsync();
+        }
     }
 }

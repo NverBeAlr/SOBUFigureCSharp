@@ -1,0 +1,64 @@
+@page "/Orders/{Id:int}/Details"
+@using SOBUFigure.Models
+@using SOBUFigure.Services.OrderDetails
+@using SOBUFigure.Services.Orders
+@inject IOrderService OrderService
+@inject IOrderDetailService OrderDetailService
+
+<h3>Order Details</h3>
+
+@if (order == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card p-3 mb-3">
+        <p><strong>Order ID:</strong> @order.Id</p>
+        <p><strong>Customer:</strong> @order.Customer?.Name</p>
+        <p><strong>Order Date:</strong> @order.OrderDate</p>
+        <p><strong>Status:</strong> @order.Status</p>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Figure</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var detail in orderDetails)
+        {
+            <tr>
+                <td>@detail.Id</td>
+                <td>@detail.Figure?.Name</td>
+                <td>@detail.Quantity</td>
+                <td>@detail.UnitPrice</td>
+                <td>@(detail.Quantity * detail.UnitPrice)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <h5>
+        Grand Total: @orderDetails.Sum(x => x.Quantity * x.UnitPrice)
+    </h5>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Order? order;
+    private List<OrderDetail> orderDetails = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        order = await OrderService.GetOrderByIdAsync(Id);
+        orderDetails = await OrderDetailService.GetOrderDetailsByOrderIdAsync(Id);
+    }
+}

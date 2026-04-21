@@ -93,7 +93,7 @@ public class AppDbContext : DbContext
             entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.FigureId).HasColumnName("figure_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity"); 
-            entity.Property(e => e.TotalPrice).HasColumnName("total_price");
+            entity.Property(e => e.UnitPrice).HasColumnName("Unit_price");
         });
     }
 }
